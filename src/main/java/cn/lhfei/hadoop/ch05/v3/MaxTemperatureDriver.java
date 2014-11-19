@@ -14,42 +14,58 @@
  * limitations under the License.
  */
 
-package cn.lhfei.hadoop.ncdc;
+package cn.lhfei.hadoop.ch05.v3;
 
+import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
+
+import cn.lhfei.hadoop.ch02.MaxTemperatureReducer;
 
 /**
  * @version 0.1
  *
  * @author Hefei Li
  *
- * @since Sep 25, 2013
+ * @since Oct 30, 2014
  */
-public class MaxTemperature {
 
-	public static void main(String[] args) throws Exception {
-		// input and output path
-		String input = "input/ncdc/sample.txt";
-		String output = "output";
-		
-		Job job = new Job();
-		job.setJarByClass(MaxTemperature.class);
-		job.setJobName("Max temperature");
+public class MaxTemperatureDriver extends Configured implements Tool {
 
-		FileInputFormat.addInputPath(job, new Path(input));
-		FileOutputFormat.setOutputPath(job, new Path(output));
+	@Override
+	public int run(String[] args) throws Exception {
+		if (args.length != 2) {
+			System.err.printf("Usage: %s [generic options] <input> <output>\n",
+					getClass().getSimpleName());
+			ToolRunner.printGenericCommandUsage(System.err);
+			return -1;
+		}
+
+		Job job = new Job(getConf(), "Max temperature");
+		job.setJarByClass(getClass());
+
+		FileInputFormat.addInputPath(job, new Path(args[0]));
+		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
 		job.setMapperClass(MaxTemperatureMapper.class);
+		job.setCombinerClass(MaxTemperatureReducer.class);
 		job.setReducerClass(MaxTemperatureReducer.class);
 
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
 
-		System.exit(job.waitForCompletion(true) ? 0 : 1);
+		return job.waitForCompletion(true) ? 0 : 1;
 	}
+
+	public static void main(String[] args) throws Exception {
+		int exitCode = ToolRunner.run(new MaxTemperatureDriver(), args);
+		System.exit(exitCode);
+	}
+
 }

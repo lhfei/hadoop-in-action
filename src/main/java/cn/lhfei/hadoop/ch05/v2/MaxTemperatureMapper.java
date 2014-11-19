@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.lhfei.hadoop.ncdc;
+package cn.lhfei.hadoop.ch05.v2;
 
 import java.io.IOException;
 
@@ -28,12 +28,11 @@ import org.apache.hadoop.mapreduce.Mapper;
  *
  * @author Hefei Li
  *
- * @since Sep 25, 2013
+ * @since Oct 30, 2014
  */
+
 public class MaxTemperatureMapper extends
 		Mapper<LongWritable, Text, Text, IntWritable> {
-
-	private static final int MISSING = 9999;
 
 	@Override
 	public void map(LongWritable key, Text value, Context context)
@@ -41,16 +40,15 @@ public class MaxTemperatureMapper extends
 
 		String line = value.toString();
 		String year = line.substring(15, 19);
-		int airTemperature;
-		if (line.charAt(87) == '+') { // parseInt doesn't like leading plus
-										// signs
-			airTemperature = Integer.parseInt(line.substring(88, 92));
-		} else {
-			airTemperature = Integer.parseInt(line.substring(87, 92));
-		}
-		String quality = line.substring(92, 93);
-		if (airTemperature != MISSING && quality.matches("[01459]")) {
+		String temp = line.substring(87, 92);
+		if (!missing(temp)) { 
+			int airTemperature = Integer.parseInt(temp);
 			context.write(new Text(year), new IntWritable(airTemperature));
 		}
 	}
+
+	private boolean missing(String temp) {
+		return temp.equals("+9999");
+	}
+
 }

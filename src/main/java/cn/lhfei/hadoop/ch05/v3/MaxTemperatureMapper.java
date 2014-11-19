@@ -14,31 +14,36 @@
  * limitations under the License.
  */
 
-package cn.lhfei.hadoop.ncdc;
+package cn.lhfei.hadoop.ch05.v3;
 
 import java.io.IOException;
+
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.Mapper;
 
 /**
  * @version 0.1
  *
  * @author Hefei Li
  *
- * @since Sep 25, 2013
+ * @since Oct 30, 2014
  */
-public class MaxTemperatureReducer extends
-		Reducer<Text, IntWritable, Text, IntWritable> {
 
+public class MaxTemperatureMapper extends
+		Mapper<LongWritable, Text, Text, IntWritable> {
+	
+	private NcdcRecordParser parser = new NcdcRecordParser();
+	
 	@Override
-	public void reduce(Text key, Iterable<IntWritable> values, Context context)
+	protected void map(LongWritable key, Text value,
+			Mapper<LongWritable, Text, Text, IntWritable>.Context context)
 			throws IOException, InterruptedException {
-
-		int maxValue = Integer.MIN_VALUE;
-		for (IntWritable value : values) {
-			maxValue = Math.max(maxValue, value.get());
+		if (parser.isValidTemperature()) {
+			context.write(new Text(parser.getYear()),
+					new IntWritable(parser.getAirTemperature()));
 		}
-		context.write(key, new IntWritable(maxValue));
 	}
+
 }
