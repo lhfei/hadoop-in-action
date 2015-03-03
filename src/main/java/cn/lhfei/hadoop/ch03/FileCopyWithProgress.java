@@ -58,25 +58,23 @@ public class FileCopyWithProgress {
 			fs = FileSystem.get(URI.create(localSrc), conf);
 			in = new BufferedInputStream(new FileInputStream(localSrc));
 			out = fs.create(new Path(dst), new Progressable() {
-
 				@Override
 				public void progress() {
 					log.info("... ...");
 				}
-
 			});
-			
+
 			IOUtils.copyBytes(in, out, 4096, true);
 
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			log.error(e.getMessage(), e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			log.error(e.getMessage(), e);
 		} finally {
 			IOUtils.closeStream(in);
 			IOUtils.closeStream(out);
 		}
-
 	}
-
 }
