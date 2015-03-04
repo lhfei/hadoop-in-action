@@ -48,7 +48,8 @@ public class MaxTemperatureDriver extends Configured implements Tool {
 			return -1;
 		}
 
-		Job job = new Job(getConf(), "Max temperature");
+		//Job job = new Job(getConf(), "Max temperature");
+		Job job = Job.getInstance(getConf(), "Max temperature");
 		job.setJarByClass(getClass());
 
 		FileInputFormat.addInputPath(job, new Path(args[0]));

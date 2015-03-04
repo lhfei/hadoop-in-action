@@ -38,7 +38,7 @@ import org.apache.hadoop.util.ReflectionUtils;
 public class PooledStreamCompressor {
 
 	/**
-	 * use case: 
+	 * use case:
 	 * 
 	 * @param args
 	 */

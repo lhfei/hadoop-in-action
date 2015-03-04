@@ -76,8 +76,5 @@ public class ShowFileStatusTest {
 		
 		Assert.assertEquals(stat.getPath().toUri().getPath(), "/dir/file");
 		Assert.assertTrue(stat.isFile());
-		
-		stat.getBlockSize();
-		
 	}
 }

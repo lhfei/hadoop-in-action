@@ -60,7 +60,5 @@ public class StreamCompressor {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
-
 }
