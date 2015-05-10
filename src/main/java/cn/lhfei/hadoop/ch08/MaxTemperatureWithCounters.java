@@ -25,6 +25,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
+import org.codehaus.plexus.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +47,7 @@ public class MaxTemperatureWithCounters extends Configured implements Tool {
 		MISSING, MALFORMED
 	}
 
-	class MaxTemperatureMapperWithCounters extends
+	static class MaxTemperatureMapperWithCounters extends
 			Mapper<LongWritable, Text, Text, IntWritable> {
 
 		private NcdcRecordParser parser = new NcdcRecordParser();
@@ -101,8 +102,10 @@ public class MaxTemperatureWithCounters extends Configured implements Tool {
 
 	public static void main(String[] args) throws Exception {
 		if(args == null || args.length != 2){
-			args = new String[]{"src/main/resources/input/ncdc/all", "src/main/resources/08"};
+			args = new String[]{"src/main/resources/input/ncdc/all", "src/main/resources/08/max"};
 		}
+		
+		FileUtils.deleteDirectory(args[1]);
 		
 		int exitCode = ToolRunner.run(new MaxTemperatureWithCounters(), args);
 		System.exit(exitCode);
