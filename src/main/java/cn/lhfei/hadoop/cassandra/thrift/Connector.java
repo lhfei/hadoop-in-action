@@ -33,7 +33,7 @@ import org.apache.thrift.transport.TTransportException;
  * @since Jun 18, 2016
  */
 public class Connector {
-	TTransport tr = new TSocket("localhost", 9160);
+	TTransport tr = new TSocket(Constants.HOST, Constants.PORT);
 
 	// returns a new connection to our keyspace
 	public Cassandra.Client connect() throws TTransportException, TException, InvalidRequestException {

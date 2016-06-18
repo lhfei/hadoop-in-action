@@ -33,6 +33,6 @@ public class Constants {
 	public static final String UTF8 = "UTF8";
 	public static final String KEYSPACE = "Hotelier";
 	public static final ConsistencyLevel CL = ConsistencyLevel.ONE;
-	public static final String HOST = "192.168.118.131";
+	public static final String HOST = "127.0.0.1";
 	public static final int PORT = 9160;
 }
