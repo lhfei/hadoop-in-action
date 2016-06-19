@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>cn.lhfei.hadoop</groupId>
@@ -215,7 +215,7 @@
 			<version>${hadoop.version}</version>
 			<type>pom</type>
 		</dependency>
-		
+
 		<!-- <dependency>
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-minikdc</artifactId>
@@ -300,8 +300,8 @@
 		</dependency>
 
 
-		
-		
+
+
 		<!-- Logging with SLF4J & LogBack -->
 
 		<dependency>
@@ -373,7 +373,7 @@
 			<artifactId>jdk.tools</artifactId>
 			<version>1.8</version>
 		</dependency>
-		
+
 		<!-- Cassandra libs. -->
 		<dependency>
 			<groupId>org.apache.cassandra</groupId>
@@ -394,6 +394,16 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
 			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.datastax.cassandra</groupId>
+			<artifactId>cassandra-driver-core</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>19.0</version>
 		</dependency>
 	</dependencies>
 

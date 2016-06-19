@@ -330,6 +330,7 @@ public class Prepopulate {
 
 		Map<ByteBuffer, Map<String, List<Mutation>>> wMutationMap = createWMutation(columnFamily, wKey);
 
+
 		client.batch_mutate(cambriaMutationMap, CL);
 		LOG.debug("Inserted " + cambriaKey);
 		client.batch_mutate(clarionMutationMap, CL);

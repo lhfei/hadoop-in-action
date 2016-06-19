@@ -25,6 +25,10 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
+import static cn.lhfei.hadoop.cassandra.thrift.Constants.KEYSPACE;
+import static cn.lhfei.hadoop.cassandra.thrift.Constants.HOST;
+import static cn.lhfei.hadoop.cassandra.thrift.Constants.PORT;
+
 /**
  * @version 1.0.0
  *
@@ -40,8 +44,11 @@ public class Connector {
 		TFramedTransport tf = new TFramedTransport(tr);
 		TProtocol proto = new TBinaryProtocol(tf);
 		Cassandra.Client client = new Cassandra.Client(proto);
-		tr.open();
-		client.set_keyspace(Constants.KEYSPACE);
+		tf.open();
+		//client.set_keyspace(KEYSPACE);
+
+		client.send_set_keyspace(KEYSPACE);
+
 		return client;
 	}
 
