@@ -40,7 +40,7 @@ public class FileSystemCat {
 		
 		Logger log = LoggerFactory.getLogger(FileSystemCat.class);
 
-		String uri = args[0];
+		String uri = HDFSConstant.FS_DEFAULTFS;
 		Configuration conf = new Configuration();
 
 		FileSystem fs = null;

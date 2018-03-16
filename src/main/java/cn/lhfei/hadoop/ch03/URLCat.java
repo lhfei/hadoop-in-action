@@ -19,10 +19,18 @@ package cn.lhfei.hadoop.ch03;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
+import com.google.gson.Gson;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FsUrlStreamHandlerFactory;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * URLCat Displays files from a Hadoop filesystem on standard output using a URLStreamHandler. <p>
@@ -36,6 +44,7 @@ import org.apache.hadoop.io.IOUtils;
 
 public class URLCat {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(URLCat.class);
 	
 	static {
 		URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
@@ -43,11 +52,31 @@ public class URLCat {
 	
 	public static void main(String[] args) {
 		InputStream in = null;
-		
+		FileSystem fs = null;
+
 		try {
-			in = new URL(args[0]).openStream();
-			IOUtils.copyBytes(in, System.out, 4096,false);
-			
+			Configuration conf = new Configuration();
+			conf.set("fs.defaultFS", HDFSConstant.FS_DEFAULTFS);
+
+			String uri = HDFSConstant.FS_DEFAULTFS + "/lhfei/IP_List.txt";
+			uri = HDFSConstant.FS_DEFAULTFS + "/hive/warehouse/lhfei.db/bank/bank.txt";
+			uri = HDFSConstant.FS_DEFAULTFS + "/lhfei/h2o/smalldata/bcwd.csv";
+
+			in = new URL(uri).openStream();
+
+			fs = FileSystem.get(URI.create(uri), conf);
+
+			//IOUtils.copyBytes(in, System.out, 1024,false);
+
+
+			FSDataInputStream inputStream = fs.open(new Path(uri), 1024);
+			String lines = org.apache.commons.io.IOUtils.toString(inputStream);
+
+			Gson gson = new Gson();
+			String json = gson.toJson(lines);
+
+			LOGGER.info("============================\t{}", json);
+
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
